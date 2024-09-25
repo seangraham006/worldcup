@@ -144,3 +144,4 @@ psql --username=freecodecamp dbname=worldcup
 ./insert_data.sh
 ./insert_data.sh
 ./insert_data.sh
+./insert_data.sh
