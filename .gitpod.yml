@@ -18,7 +18,6 @@ tasks:
       sudo rm /workspace/project/TUTORIAL.md
       pg_stop && sudo service postgresql start && echo "SELECT 'CREATE USER freecodecamp WITH CREATEDB' WHERE NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname='freecodecamp')\gexec" | psql -U postgres -X
       exit
-  -init: ./setup_db.sh
 
 vscode:
   extensions:
