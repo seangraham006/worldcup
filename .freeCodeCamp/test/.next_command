@@ -145,3 +145,9 @@ psql --username=freecodecamp dbname=worldcup
 ./insert_data.sh
 ./insert_data.sh
 ./insert_data.sh
+cp games.csv games_test.csv
+./insert_data.sh
+./insert_data.sh
+./insert_data.sh
+./insert_data.sh
+./insert_data.sh

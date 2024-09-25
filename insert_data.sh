@@ -13,17 +13,26 @@ echo "$($PSQL "TRUNCATE TABLE games,teams")"
 
 echo -e "\n~~ Inserting Data ~~\n"
 
-while IFS=, read -r YEAR ROUND WINNER OPPONENT WINNER_GOALS OPPONENT GOALS
+while IFS=, read -r YEAR ROUND WINNER OPPONENT WINNER_GOALS OPPONENT_GOALS
 do
   if [[ $YEAR != 'year' ]]
   then
-    # check if winner team name already exists
-    # if team name does not exist insert it into teams
-    # get winner team_id
-    # check if opponent team name already exists
-    # if team name does not exist insert it into teams
-    # get opponent team_id
-    echo sup
+    WINNER_ID=$($PSQL "SELECT TEAM_ID FROM TEAMS WHERE NAME = '$WINNER'")
+    if [[ -z $WINNER_ID ]]
+    then
+      INSERT_WINNER=$($PSQL "INSERT INTO TEAMS(NAME) VALUES('$WINNER')")
+      echo inserted $WINNER into teams
+    fi
+    WINNER_ID=$($PSQL "SELECT TEAM_ID FROM TEAMS WHERE NAME = '$WINNER'")
+
+    OPPONENT_ID=$($PSQL "SELECT TEAM_ID FROM TEAMS WHERE NAME = '$OPPONENT'")
+    if [[ -z $OPPONENT_ID ]]
+    then
+      INSERT_OPPONENT=$($PSQL "INSERT INTO TEAMS(NAME) VALUES('$OPPONENT')")
+      echo inserted $OPPONENT into teams
+    fi
+    OPPONENT_ID=$($PSQL "SELECT TEAM_ID FROM TEAMS WHERE NAME = '$OPPONENT'")
+
     # insert into games VALUES($YEAR,'$ROUND',$WINNER_ID,$OPPONENT_ID,$WINNER_GOALS,$OPPONENT_GOALS)
   fi
-done < games.csv
+done < games_test.csv
