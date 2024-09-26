@@ -41,7 +41,7 @@ echo -e "\nList of unique winning team names in the whole data set:"
 echo  "$($PSQL "SELECT DISTINCT(NAME) FROM TEAMS JOIN GAMES ON TEAMS.TEAM_ID = GAMES.WINNER_ID ORDER BY NAME")"
 
 echo -e "\nYear and team name of all the champions:"
-echo  "$($PSQL "SELECT NAME,YEAR FROM GAMES FULL JOIN TEAMS ON GAMES.WINNER_ID = TEAMS.TEAM_ID WHERE ROUND='Final'")"
+echo  "$($PSQL "SELECT YEAR,NAME FROM GAMES FULL JOIN TEAMS ON GAMES.WINNER_ID = TEAMS.TEAM_ID WHERE ROUND='Final' ORDER BY YEAR")"
 
 echo -e "\nList of teams that start with 'Co':"
 echo  "$($PSQL "SELECT NAME FROM TEAMS WHERE NAME LIKE 'Co%'")"
