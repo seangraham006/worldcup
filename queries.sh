@@ -1,3 +1,4 @@
+
 #! /bin/bash
 
 PSQL="psql --username=freecodecamp --dbname=worldcup --no-align --tuples-only -c"
@@ -29,10 +30,15 @@ echo -e "\nWinner of the 2018 tournament team name:"
 echo  "$($PSQL "SELECT NAME FROM GAMES FULL JOIN TEAMS ON GAMES.WINNER_ID = TEAMS.TEAM_ID WHERE ROUND='Final' AND YEAR=2018")"
 
 echo -e "\nList of teams who played in the 2014 'Eighth-Final' round:"
-echo  "$($PSQL "SELECT w.NAME as WINNER, o.NAME AS OPPONENT FROM GAMES FULL JOIN TEAMS AS w ON GAMES.WINNER_ID = w.TEAM_ID FULL JOIN TEAMS AS o ON GAMES.OPPONENT_ID = o.TEAM_ID WHERE ROUND='Eighth-Final' AND YEAR=2014")"
+echo  "$($PSQL "SELECT NAME FROM TEAMS WHERE TEAM_ID IN (
+    SELECT WINNER_ID FROM GAMES WHERE ROUND='Eighth-Final' AND YEAR=2014
+    UNION
+    SELECT OPPONENT_ID FROM GAMES WHERE ROUND='Eighth-Final' AND YEAR=2014
+  )
+  ORDER BY NAME")"
 
 echo -e "\nList of unique winning team names in the whole data set:"
-echo  "$($PSQL "SELECT DISTINCT(NAME) FROM TEAMS")"
+echo  "$($PSQL "SELECT DISTINCT(NAME) FROM TEAMS JOIN GAMES ON TEAMS.TEAM_ID = GAMES.WINNER_ID ORDER BY NAME")"
 
 echo -e "\nYear and team name of all the champions:"
 echo  "$($PSQL "SELECT NAME,YEAR FROM GAMES FULL JOIN TEAMS ON GAMES.WINNER_ID = TEAMS.TEAM_ID WHERE ROUND='Final'")"
